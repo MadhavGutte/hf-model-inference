@@ -15,6 +15,8 @@ services:
       - TOP_P=${TOP_P}
       - TENSOR_PARALLEL_SIZE=${TENSOR_PARALLEL_SIZE}
       - GPU_MEMORY_UTILIZATION=${GPU_MEMORY_UTILIZATION}
+      - QUANTIZATION=${QUANTIZATION}
+      - QUANTIZATION_BITS=${QUANTIZATION_BITS}
       - HF_TOKEN=${HF_TOKEN}
     gpus: all
     restart: unless-stopped

@@ -38,6 +38,8 @@ class Settings:
     trust_remote_code: bool
     tensor_parallel_size: int
     gpu_memory_utilization: float
+    quantization: str
+    quantization_bits: int
 
 
 
@@ -53,4 +55,6 @@ def get_settings() -> Settings:
         trust_remote_code=_to_bool(os.getenv("TRUST_REMOTE_CODE"), False),
         tensor_parallel_size=_to_int(os.getenv("TENSOR_PARALLEL_SIZE"), 1),
         gpu_memory_utilization=_to_float(os.getenv("GPU_MEMORY_UTILIZATION"), 0.9),
+        quantization=os.getenv("QUANTIZATION", "none").lower(),
+        quantization_bits=_to_int(os.getenv("QUANTIZATION_BITS"), 0),
     )

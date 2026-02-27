@@ -39,6 +39,7 @@ Optional:
 
 - `HF_TOKEN` for gated/private models
 - `TENSOR_PARALLEL_SIZE` for multi-GPU
+- `QUANTIZATION` for quantized loading
 
 ### Env injection options when deploying
 
@@ -76,6 +77,21 @@ docker compose up --build
 ```
 
 API URL: `http://localhost:8000`
+
+### Quantization (INT8 / INT4)
+
+Use env variables to pick quantization without code changes.
+
+Examples:
+
+- `QUANTIZATION=int8`
+- `QUANTIZATION=int4`
+
+Notes:
+
+- For `transformers` backend, `int8`/`int4` maps to bitsandbytes quantization.
+- For `vllm`, `int8`/`int4` maps to `bitsandbytes` mode; you can also set `QUANTIZATION=awq` or `QUANTIZATION=gptq` if your model supports them.
+- You can force transformers bits with `QUANTIZATION_BITS=4` or `QUANTIZATION_BITS=8`.
 
 ## 5) API usage
 
