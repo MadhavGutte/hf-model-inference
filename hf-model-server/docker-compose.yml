@@ -1,0 +1,20 @@
+services:
+  model-api:
+    build: .
+    container_name: hf-model-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - MODEL_ID=${MODEL_ID}
+      - INFERENCE_BACKEND=${INFERENCE_BACKEND}
+      - TRUST_REMOTE_CODE=${TRUST_REMOTE_CODE}
+      - MAX_NEW_TOKENS=${MAX_NEW_TOKENS}
+      - TEMPERATURE=${TEMPERATURE}
+      - TOP_P=${TOP_P}
+      - TENSOR_PARALLEL_SIZE=${TENSOR_PARALLEL_SIZE}
+      - GPU_MEMORY_UTILIZATION=${GPU_MEMORY_UTILIZATION}
+      - HF_TOKEN=${HF_TOKEN}
+    gpus: all
+    restart: unless-stopped
