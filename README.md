@@ -148,3 +148,31 @@ Then restart the API:
 ```bash
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+
+
+# For deployment on cloud instance
+
+Open terminal from Vast UI (browser), then run:
+```bash
+git clone <repo-url>
+cd <repo>
+cp env.example .env
+pip install -r requirements.txt
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+If you need Docker specifically, in that same web terminal check:
+```bash
+docker --version
+docker compose version
+```
+If Docker exists, use:
+```bash
+docker compose up --build -d
+```
+
+To test it run terminal curl command as
+```bash
+curl http://127.0.0.1:8000/health
+
+curl -X POST http://127.0.0.1:8000/generae =H "Content-Type: application/json" -d "{\"prompt\":\"Write 3 bullet points on AI inference.\",\"max_new_tokens\":80,\"temperature\":0.7,\"top_p\":0.95}"
+```
