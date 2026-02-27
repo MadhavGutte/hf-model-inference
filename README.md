@@ -173,3 +173,23 @@ Then restart the API:
 ```bash
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+
+
+# For deployment on cloud instance
+Open terminal from Vast UI (browser), then run:
+```bash
+git clone <repo-url>
+cd <repo>
+cp [.env.example](http://_vscodecontentref_/0) .env
+pip install -r requirements.txt
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+If you need Docker specifically, in that same web terminal check:
+```bash
+docker --version
+docker compose version
+```
+If Docker exists, use:
+```bash
+docker compose up --build -d
+```
