@@ -130,3 +130,21 @@ Response example:
 - For gated models, set `HF_TOKEN` in env.
 - If a model requires custom code, set `TRUST_REMOTE_CODE=true`.
 - For non-generation tasks (embedding/classification/vision), you can keep the same FastAPI layout and change only `app/engine.py` task logic.
+
+## 7) Troubleshooting
+
+### `ValueError: 'aimv2' is already used by a Transformers config`
+
+This means your installed `transformers` version is incompatible with the pinned `vllm` build.
+
+Run:
+
+```bash
+pip install --upgrade --force-reinstall -r requirements.txt
+```
+
+Then restart the API:
+
+```bash
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
