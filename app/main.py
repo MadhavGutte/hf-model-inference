@@ -6,9 +6,11 @@ from pydantic import BaseModel, Field
 
 from app.config import get_settings
 from app.engine import GenerationOptions, ModelEngine
+from app.guardrails import Guardrails, GuardrailViolation
 
 settings = get_settings()
 engine = ModelEngine(settings)
+guardrails = Guardrails(settings)
 
 
 class GenerateRequest(BaseModel):
@@ -45,8 +47,13 @@ def health() -> dict:
 @app.post("/generate", response_model=GenerateResponse)
 def generate(payload: GenerateRequest) -> GenerateResponse:
     try:
+        guardrails.validate_prompt(payload.prompt)
+
+        requested_max_new_tokens = payload.max_new_tokens or settings.max_new_tokens
+        guardrails.validate_max_new_tokens(requested_max_new_tokens)
+
         options = GenerationOptions(
-            max_new_tokens=payload.max_new_tokens or settings.max_new_tokens,
+            max_new_tokens=requested_max_new_tokens,
             temperature=payload.temperature if payload.temperature is not None else settings.temperature,
             top_p=payload.top_p if payload.top_p is not None else settings.top_p,
         )
@@ -56,5 +63,7 @@ def generate(payload: GenerateRequest) -> GenerateResponse:
             backend=settings.backend,
             generated_text=output_text,
         )
+    except GuardrailViolation as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc

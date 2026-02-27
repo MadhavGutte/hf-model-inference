@@ -131,7 +131,32 @@ Response example:
 - If a model requires custom code, set `TRUST_REMOTE_CODE=true`.
 - For non-generation tasks (embedding/classification/vision), you can keep the same FastAPI layout and change only `app/engine.py` task logic.
 
-## 7) Troubleshooting
+## 7) Guardrails
+
+Guardrails are safety and control rules around model inference. In this project, they run before generation to keep API usage bounded and policy-aware.
+
+Available guardrails (env-driven):
+
+- `ENABLE_GUARDRAILS=true|false`
+- `MAX_PROMPT_CHARS` to reject overlong prompts
+- `MAX_REQUEST_NEW_TOKENS` to cap generation size per request
+- `BLOCKED_TERMS` (comma-separated) to reject prompts containing specific terms
+
+Example:
+
+```dotenv
+ENABLE_GUARDRAILS=true
+MAX_PROMPT_CHARS=3000
+MAX_REQUEST_NEW_TOKENS=256
+BLOCKED_TERMS=malware source code,credit card dump
+```
+
+Behavior:
+
+- Guardrail violations return HTTP `400` with a clear reason.
+- This logic is implemented in `app/guardrails.py` and used by `POST /generate`.
+
+## 8) Troubleshooting
 
 ### `ValueError: 'aimv2' is already used by a Transformers config`
 
