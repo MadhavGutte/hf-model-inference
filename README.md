@@ -154,7 +154,7 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 Open terminal from Vast UI (browser), then run:
 ```bash
-git clone <repo-url>
+git clone https://github.com/MadhavGutte/hf-model-inference.git
 cd <repo>
 cp env.example .env
 pip install -r requirements.txt
